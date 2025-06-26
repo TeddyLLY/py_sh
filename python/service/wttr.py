@@ -19,4 +19,4 @@ def execute_shell(city):
 
 
 def get_wttr_str(city):
-    return fetch_weather_to_string(city);
+    return fetch_weather_to_string(city)
