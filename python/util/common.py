@@ -2,6 +2,8 @@ from configparser import ConfigParser
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import os
+import pytz
+from datetime import datetime
 
 global_config = None
 global_logger = None
@@ -55,3 +57,19 @@ def get_logger():
         global_logger.addHandler(handler)
 
     return global_logger
+
+def get_taiwan_us_time():
+    # 定義時區
+    tz_taiwan = pytz.timezone("Asia/Taipei")
+    tz_us = pytz.timezone("America/New_York")
+
+    # 取得當前時間（有時區資訊）
+    now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+    time_taiwan = now_utc.astimezone(tz_taiwan)
+    time_us = now_utc.astimezone(tz_us)
+
+    # 格式化輸出
+    return {
+        "taiwan_time": time_taiwan.strftime("%Y-%m-%d %H:%M:%S %Z%z"),
+        "us_time": time_us.strftime("%Y-%m-%d %H:%M:%S %Z%z")
+    }

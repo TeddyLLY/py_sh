@@ -5,7 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
 import time
 from python.util.common import get_logger , get_config
-from python.api.wttr import main as wttr
+from python.api.wttr import fetch_weather_to_string
 
 config = get_config()
 logger = get_logger()
@@ -14,7 +14,7 @@ logger = get_logger()
 def add_task(scheduler):
 
     scheduler.add_job(
-        func=wttr.main,
+        func=fetch_weather_to_string,
         args=[config.get('config', 'city')],
         trigger='cron', hour=config.get('config', 'hour'), minute=config.get('config', 'min'), id='automation_agent_monitor_disk_usage'
     )
