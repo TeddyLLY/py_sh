@@ -14,7 +14,7 @@ def fetch_weather_to_string(city="Taipei"):
     # url = f"https://wttr.in/{city}?format=j1"
     url = f"https://wttr.in/{city}?d"
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(url, timeout=int(config.get('config', 'timeout')))
         if response.status_code == 200:
             return f"🌦️ {city}即時天氣（字串格式）：" + response.text + f" {get_taiwan_us_time()}"
         else:
