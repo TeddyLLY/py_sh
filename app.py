@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from python.util.common import get_config , get_logger
 import pytz
 from python.task.scheduler import main as scheduler
 from python.service.wttr import get_wttr_str
+from python.service.bench_cpu import bench_cpu_result
 import threading
 import time
 from datetime import datetime
@@ -32,23 +33,7 @@ def wttr():
 def bench_cpu():
     count = int(request.args.get('count', default=10000000))
 
-    start_time = datetime.utcnow().isoformat() + "Z"
-    start = time.time()
-
-    total = 0
-    for i in range(count):
-        total += (i % 5) * (i % 3)
-
-    end = time.time()
-    end_time = datetime.utcnow().isoformat() + "Z"
-    elapsed = round(end - start, 4)
-
-    return jsonify({
-        "total": total,
-        "time_sec": elapsed,
-        "start_time": start_time,
-        "end_time": end_time
-    })
+    return bench_cpu_result(count)
 
 if __name__ == '__main__':
     try:
