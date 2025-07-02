@@ -16,7 +16,7 @@ def fetch_weather_to_string(city="Taipei"):
     try:
         response = requests.get(url, timeout=5)
         if response.status_code == 200:
-            return f"🌦️ {city}即時天氣（字串格式）：" + response.text + get_taiwan_us_time()
+            return f"🌦️ {city}即時天氣（字串格式）：" + response.text + f" {get_taiwan_us_time()}"
         else:
             return f"🌦️ 取得天氣失敗：Error {response.status_code}"
     except Exception as e:

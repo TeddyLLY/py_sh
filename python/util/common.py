@@ -16,7 +16,7 @@ def get_config():
     global global_config
     if global_config == None:
         global_config = ConfigParser()
-        global_config.read(get_pypath('config.ini'))
+        global_config.read(get_pypath('config/config.ini'))
     return global_config
 
 

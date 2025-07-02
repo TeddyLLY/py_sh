@@ -39,15 +39,13 @@ def main():
     }
     scheduler = BackgroundScheduler( job_defaults=job_defaults, executors=executors)
 
-    # add task
-    scheduler = add_task(scheduler)
-    scheduler.start()
-
-    logger.info("Automation agent scheduler started. Press Ctrl+C to exit.")
-
     try:
-        while True:
-            time.sleep(10)
+        # add task
+        scheduler = add_task(scheduler)
+        scheduler.start()
+
+        logger.info("Automation agent scheduler started. Press Ctrl+C to exit.")
+
     except (KeyboardInterrupt, SystemExit) as k:
         scheduler.shutdown()
         logger.error("Scheduler shut down.")
@@ -56,10 +54,13 @@ def main():
         logger.error("Scheduler broken.")
         logger.error(f"Exception occurred: {e}", exc_info=True)
     finally:
-        exc_type, exc_value, exc_traceback = traceback.format_exc(), *sys.exc_info()
+        formatted_traceback = traceback.format_exc()
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+
         if exc_value:
             logger.error("Final error message:")
-            logger.error(exc_value)
+            logger.error(f"{exc_type.__name__}: {exc_value}")
+            logger.error(formatted_traceback)
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ from datetime import datetime
 
 config = get_config()
 app = Flask(__name__)
-app.debug = config.get('config', 'APP_DEBUG_MODE')
+app.debug =  config.getboolean('config', 'APP_DEBUG_MODE')
 
 tz = pytz.timezone("Asia/Taipei")
 logger = get_logger()
@@ -30,7 +30,7 @@ def wttr():
 # test cpu 餘數計算時間
 @app.route('/bench_cpu')
 def bench_cpu():
-    count = request.args.get('count', default=10000000)
+    count = int(request.args.get('count', default=10000000))
 
     start_time = datetime.utcnow().isoformat() + "Z"
     start = time.time()
@@ -52,8 +52,8 @@ def bench_cpu():
 
 if __name__ == '__main__':
     try:
-        threading.Thread(target=scheduler(), daemon=True).start()
-        app.run(host=config.get('config', 'APP_HOST'), port=config.get('config', 'APP_PORT'),threaded=True)
+        threading.Thread(target=scheduler, daemon=True).start()
+        app.run(host=config.get('config', 'APP_HOST'), port=int(config.get('config', 'APP_PORT')),threaded=True)
 
 
     except Exception as e:
